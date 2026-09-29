@@ -1,5 +1,9 @@
 gastos.py
-    F 5:0 main - D (28)
+    F 68:0 main - E (32)
+    F 46:0 seleccionar_categoria - A (4)
+    F 22:0 cargar_gastos - A (2)
+    F 40:0 mostrar_gastos - A (2)
+    F 30:0 guardar_gastos - A (1)
 
-1 blocks (classes, functions, methods) analyzed.
-Average complexity: D (28.0)
+5 blocks (classes, functions, methods) analyzed.
+Average complexity: B (8.2)
