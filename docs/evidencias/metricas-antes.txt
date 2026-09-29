@@ -1,0 +1,5 @@
+gastos.py
+    F 5:0 main - D (28)
+
+1 blocks (classes, functions, methods) analyzed.
+Average complexity: D (28.0)
