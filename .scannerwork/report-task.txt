@@ -1,0 +1,7 @@
+organization=jero-to
+projectKey=jero-to_app_gastos
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.108909
+dashboardUrl=https://sonarcloud.io/dashboard?id=jero-to_app_gastos
+ceTaskId=AaDvF47Ww9J6DS7cHAZB
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AaDvF47Ww9J6DS7cHAZB

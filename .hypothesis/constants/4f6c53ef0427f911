@@ -1,0 +1,4 @@
+# file: /Users/jero/Cursos/gastos/app_gastos/gastos.py
+# hypothesis_version: 6.141.1
+
+['  1. Añadir gasto', '  2. Listar gastos', '  3. Eliminar gasto', '  4. Total mensual', '  8. Salir', '  Categorías:', '1', '2', '3', '4', '5', '6', '7', '8', 'Alimentacion', 'Año: ', 'Cantidad (€): ', 'Descripción: ', 'Elige una opción: ', 'Fecha (AAAA-MM-DD): ', 'Mes (1-12): ', 'Ocio', 'Otros', 'Salud', 'Transporte', '__main__', 'ascendente', 'cantidad', 'categoria', 'descendente', 'descripcion', 'fecha', 'gastos.json', 'r', 's', 'utf-8', 'w', '¡Hasta luego!']

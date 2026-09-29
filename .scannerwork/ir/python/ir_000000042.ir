@@ -1,0 +1,15 @@
+
+ÔÂ"
+    Devuelve una nueva lista con los gastos cuya categor√≠a coincide exactamente
+    con el valor proporcionado. Preserva el orden original.
+
+    Args:
+        gastos:    Lista de dicts de gastos.
+        categoria: Valor de categor√≠a a filtrar (la validaci√≥n la realiza el llamador).
+
+    Returns:
+        Nueva lista de dicts de gastos filtrada.
+    "strgastosS S(,	categoriaS. S(<">,
+*
+_ _(="?python-unknown?:Blist
+_ _(=*//Users/jero/Cursos/gastos/app_gastos/filtros.py

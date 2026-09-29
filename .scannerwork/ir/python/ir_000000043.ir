@@ -1,0 +1,26 @@
+
+Ÿ•"
+    Devuelve una nueva lista de gastos ordenada por cantidad.
+    Por defecto orden descendente (mayor a menor).
+    No modifica la lista original.
+
+    Args:
+        gastos:     Lista original de gastos.
+        ascendente: Si True, ordena de menor a mayor; si False (por defecto),
+                    ordena de mayor a menor.
+
+    Returns:
+        Nueva lista ordenada sin modificar la original.
+    "strgastosb b(*
+ascendenteb, b(D"»!
+
+p p(5"#unknown-value#)
+'
+p? p(M"
+__bool__*:BboolH)
+'
+p? p(M"#unaryop !#2!:Bbool0
+.
+p p(N"
+builtinssorted*:Blist
+p p(N*//Users/jero/Cursos/gastos/app_gastos/filtros.py
