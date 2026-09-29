@@ -1,131 +1,244 @@
+"""
+gastos.py – Aplicación de registro de gastos por consola.
+
+Gestiona la persistencia en gastos.json e invoca las funciones puras
+de consulta y filtrado definidas en filtros.py.
+"""
+from __future__ import annotations
+
 import json
 import os
 
+import filtros
 
-def main():
-    x = "gastos.json"
+FICHERO = "gastos.json"
+CATEGORIAS = ["Alimentacion", "Transporte", "Ocio", "Salud", "Otros"]
 
-    if os.path.exists("gastos.json"):
-        f = open("gastos.json", "r")
-        l2 = json.load(f)
-        f.close()
-    else:
-        l2 = []
 
+# ---------------------------------------------------------------------------
+# Helpers de persistencia
+# ---------------------------------------------------------------------------
+
+def cargar_gastos() -> list[dict]:
+    """Carga y devuelve la lista de gastos desde gastos.json."""
+    if not os.path.exists(FICHERO):
+        return []
+    with open(FICHERO, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def guardar_gastos(gastos: list[dict]) -> None:
+    """Persiste la lista de gastos en gastos.json."""
+    with open(FICHERO, "w", encoding="utf-8") as f:
+        json.dump(gastos, f, ensure_ascii=False, indent=2)
+
+
+# ---------------------------------------------------------------------------
+# Helpers de presentación
+# ---------------------------------------------------------------------------
+
+def mostrar_gastos(gastos: list[dict]) -> None:
+    """Imprime la lista de gastos con formato numerado."""
+    for i, g in enumerate(gastos, start=1):
+        print(f"  {i}. [{g['fecha']}] {g['descripcion']} — {g['cantidad']:.2f} € ({g['categoria']})")
+
+
+def seleccionar_categoria() -> str | None:
+    """
+    Muestra el menú de categorías y devuelve la seleccionada,
+    o None si la selección es inválida.
+    """
+    print("  Categorías:")
+    for i, cat in enumerate(CATEGORIAS, start=1):
+        print(f"    {i}. {cat}")
+    seleccion = input("Selecciona categoría (1-5): ").strip()
+    try:
+        idx = int(seleccion) - 1
+        if 0 <= idx < len(CATEGORIAS):
+            return CATEGORIAS[idx]
+    except ValueError:
+        pass
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Función principal
+# ---------------------------------------------------------------------------
+
+def main() -> None:
+    """Bucle principal del menú de la aplicación."""
     while True:
-        print("")
-        print("=== APP DE GASTOS ===")
-        print("1. Añadir gasto")
-        print("2. Listar gastos")
-        print("3. Eliminar gasto")
-        print("4. Salir")
-        print("")
-        tmp = input("Elige una opción: ").strip()
+        # Cargar gastos al inicio de cada iteración para reflejar cambios
+        l2 = cargar_gastos()
 
-        if tmp == "1":
-            print("")
-            d = input("Descripción: ").strip()
-            if d == "":
-                print("Error: la descripción no puede estar vacía.")
-            else:
-                cant = input("Cantidad (ej: 12.50): ").strip()
-                try:
-                    cant = float(cant)
-                    if cant <= 0:
-                        print("Error: la cantidad debe ser mayor que cero.")
-                    else:
-                        print("")
-                        print("Categorías disponibles:")
-                        print("  1. Alimentación")
-                        print("  2. Transporte")
-                        print("  3. Ocio")
-                        print("  4. Salud")
-                        print("  5. Otros")
-                        cat_op = input("Elige categoría (1-5): ").strip()
-                        if cat_op == "1":
-                            cat = "Alimentación"
-                        elif cat_op == "2":
-                            cat = "Transporte"
-                        elif cat_op == "3":
-                            cat = "Ocio"
-                        elif cat_op == "4":
-                            cat = "Salud"
-                        elif cat_op == "5":
-                            cat = "Otros"
-                        else:
-                            cat = None
-                        if cat is None:
-                            print("Error: categoría no válida.")
-                        else:
-                            fecha = input("Fecha (AAAA-MM-DD): ").strip()
-                            partes = fecha.split("-")
-                            if len(partes) != 3 or len(partes[0]) != 4 or len(partes[1]) != 2 or len(partes[2]) != 2:
-                                print("Error: formato de fecha incorrecto.")
-                            else:
-                                try:
-                                    int(partes[0])
-                                    int(partes[1])
-                                    int(partes[2])
-                                    gasto = {}
-                                    gasto["descripcion"] = d
-                                    gasto["cantidad"] = cant
-                                    gasto["categoria"] = cat
-                                    gasto["fecha"] = fecha
-                                    l2.append(gasto)
-                                    f = open("gastos.json", "w")
-                                    json.dump(l2, f, ensure_ascii=False, indent=2)
-                                    f.close()
-                                    print("Gasto añadido correctamente.")
-                                except ValueError:
-                                    print("Error: la fecha contiene caracteres no numéricos.")
-                except ValueError:
-                    print("Error: la cantidad introducida no es un número válido.")
+        print("\n=== Menú de gastos ===")
+        print("  1. Añadir gasto")
+        print("  2. Listar gastos")
+        print("  3. Eliminar gasto")
+        print("  4. Total mensual")
+        print("  5. Total por categoría")
+        print("  6. Filtrar por categoría")
+        print("  7. Ordenar por importe")
+        print("  8. Salir")
+        opcion = input("Elige una opción: ").strip()
 
-        elif tmp == "2":
-            print("")
-            if len(l2) == 0:
+        # ------------------------------------------------------------------
+        # Opción 1: Añadir gasto
+        # ------------------------------------------------------------------
+        if opcion == "1":
+            descripcion = input("Descripción: ").strip()
+            cantidad_str = input("Cantidad (€): ").strip()
+            try:
+                cantidad = float(cantidad_str)
+            except ValueError:
+                print("Error: se esperaba un número.")
+                continue
+
+            cat = seleccionar_categoria()
+            if cat is None:
+                print("Error: categoría no válida. Las categorías válidas son: Alimentacion, Transporte, Ocio, Salud, Otros.")
+                continue
+
+            fecha = input("Fecha (AAAA-MM-DD): ").strip()
+
+            nuevo_gasto = {
+                "descripcion": descripcion,
+                "cantidad": cantidad,
+                "categoria": cat,
+                "fecha": fecha,
+            }
+            l2.append(nuevo_gasto)
+            guardar_gastos(l2)
+            print("Gasto añadido correctamente.")
+
+        # ------------------------------------------------------------------
+        # Opción 2: Listar gastos
+        # ------------------------------------------------------------------
+        elif opcion == "2":
+            if not l2:
                 print("No hay gastos registrados.")
             else:
-                print(f"{'Nº':<4} {'Fecha':<12} {'Categoría':<15} {'Cantidad':>10}  Descripción")
-                print("-" * 60)
-                i = 0
-                while i < len(l2):
-                    g = l2[i]
-                    print(f"{i+1:<4} {g['fecha']:<12} {g['categoria']:<15} {g['cantidad']:>10.2f}  {g['descripcion']}")
-                    i = i + 1
+                print(f"\n--- Gastos ({len(l2)} en total) ---")
+                mostrar_gastos(l2)
 
-        elif tmp == "3":
-            print("")
-            if len(l2) == 0:
+        # ------------------------------------------------------------------
+        # Opción 3: Eliminar gasto
+        # ------------------------------------------------------------------
+        elif opcion == "3":
+            if not l2:
+                print("No hay gastos registrados.")
+                continue
+            print(f"\n--- Gastos ({len(l2)} en total) ---")
+            mostrar_gastos(l2)
+            num_str = input("Número del gasto a eliminar: ").strip()
+            try:
+                num = int(num_str)
+            except ValueError:
+                print("Error: se esperaba un número entero.")
+                continue
+            if num < 1 or num > len(l2):
+                print(f"Error: número fuera de rango (1-{len(l2)}).")
+                continue
+            eliminado = l2.pop(num - 1)
+            guardar_gastos(l2)
+            print(f"Gasto eliminado: {eliminado['descripcion']} — {eliminado['cantidad']:.2f} €")
+
+        # ------------------------------------------------------------------
+        # Opción 4: Total mensual
+        # ------------------------------------------------------------------
+        elif opcion == "4":
+            anio_str = input("Año: ").strip()
+            mes_str = input("Mes (1-12): ").strip()
+            try:
+                anio = int(anio_str)
+            except ValueError:
+                print("Error: se esperaba un número entero.")
+                continue
+            try:
+                mes = int(mes_str)
+            except ValueError:
+                print("Error: se esperaba un número entero.")
+                continue
+            if mes < 1 or mes > 12:
+                print("Error: el mes debe ser un número entero entre 1 y 12.")
+                continue
+            total = filtros.total_mensual(l2, anio, mes)
+            print(f"Total en {mes:02d}/{anio}: {total:.2f} €")
+
+        # ------------------------------------------------------------------
+        # Opción 5: Total por categoría
+        # ------------------------------------------------------------------
+        elif opcion == "5":
+            filtrar_mes = input("¿Filtrar por mes? (s/n): ").strip().lower()
+            if filtrar_mes == "s":
+                anio_str = input("Año: ").strip()
+                mes_str = input("Mes (1-12): ").strip()
+                try:
+                    anio = int(anio_str)
+                except ValueError:
+                    print("Error: se esperaba un número entero.")
+                    continue
+                try:
+                    mes = int(mes_str)
+                except ValueError:
+                    print("Error: se esperaba un número entero.")
+                    continue
+                if mes < 1 or mes > 12:
+                    print("Error: el mes debe ser un número entero entre 1 y 12.")
+                    continue
+                resultado = filtros.total_por_categoria(l2, anio, mes)
+            else:
+                resultado = filtros.total_por_categoria(l2)
+
+            if not resultado:
                 print("No hay gastos registrados.")
             else:
-                i = 0
-                while i < len(l2):
-                    g = l2[i]
-                    print(f"{i+1}. [{g['fecha']}] {g['descripcion']} - {g['cantidad']:.2f} € ({g['categoria']})")
-                    i = i + 1
-                print("")
-                num = input("Número del gasto a eliminar: ").strip()
-                try:
-                    num = int(num)
-                    if num < 1 or num > len(l2):
-                        print("Error: número fuera de rango.")
-                    else:
-                        eliminado = l2[num - 1]
-                        l2.pop(num - 1)
-                        f = open("gastos.json", "w")
-                        json.dump(l2, f, ensure_ascii=False, indent=2)
-                        f.close()
-                        print(f"Gasto '{eliminado['descripcion']}' eliminado correctamente.")
-                except ValueError:
-                    print("Error: introduce un número válido.")
+                print("\n--- Total por categoría ---")
+                for cat, total in resultado.items():
+                    print(f"  {cat}: {total:.2f} €")
 
-        elif tmp == "4":
-            print("Hasta luego.")
+        # ------------------------------------------------------------------
+        # Opción 6: Filtrar por categoría
+        # ------------------------------------------------------------------
+        elif opcion == "6":
+            cat = seleccionar_categoria()
+            if cat is None:
+                print("Error: categoría no válida. Las categorías válidas son: Alimentacion, Transporte, Ocio, Salud, Otros.")
+                continue
+            resultado = filtros.filtrar_por_categoria(l2, cat)
+            if not resultado:
+                print("No hay gastos en esa categoría.")
+            else:
+                print(f"\n--- Gastos en '{cat}' ({len(resultado)}) ---")
+                mostrar_gastos(resultado)
+
+        # ------------------------------------------------------------------
+        # Opción 7: Ordenar por importe
+        # ------------------------------------------------------------------
+        elif opcion == "7":
+            orden_str = input("¿Orden ascendente? (s/n): ").strip().lower()
+            ascendente = orden_str == "s"
+            resultado = filtros.ordenar_por_importe(l2, ascendente)
+            if not resultado:
+                print("No hay gastos registrados.")
+            else:
+                direccion = "ascendente" if ascendente else "descendente"
+                print(f"\n--- Gastos ordenados por importe ({direccion}) ---")
+                mostrar_gastos(resultado)
+
+        # ------------------------------------------------------------------
+        # Opción 8: Salir
+        # ------------------------------------------------------------------
+        elif opcion == "8":
+            print("¡Hasta luego!")
             break
 
+        # ------------------------------------------------------------------
+        # Opción no válida
+        # ------------------------------------------------------------------
         else:
-            print("Opción no válida. Elige entre 1 y 4.")
+            print("Opción no válida. Elige entre 1 y 8.")
 
 
-main()
+if __name__ == "__main__":
+    main()

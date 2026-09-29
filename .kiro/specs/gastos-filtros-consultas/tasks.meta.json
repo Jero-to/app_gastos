@@ -1,0 +1,73 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Crear el módulo filtros.py con las cuatro funciones puras": [
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711271438
+      },
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711276382
+      },
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711368556
+      }
+    ],
+    "2. Crear tests unitarios y de propiedad": [
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711271478
+      },
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711376912
+      },
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711553176
+      }
+    ],
+    "3. Modificar gastos.py — punto de entrada y menú ampliado": [
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711271502
+      },
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711377346
+      },
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711553917
+      }
+    ],
+    "4. Verificación de no-regresión del comportamiento existente": [
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711271524
+      },
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711556515
+      },
+      {
+        "executionId": "c6f7e008-8e41-49a3-af08-e650f0d8b35c",
+        "chatSessionId": "sess_afd2007e-c564-4ca4-bb6d-9a8f1d044e8b",
+        "timestamp": 1790711649119
+      }
+    ]
+  }
+}
